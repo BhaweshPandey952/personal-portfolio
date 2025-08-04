@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Bhawesh Pandey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .blog-post-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .blog-post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        .modal-content {
+            max-width: 800px;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Simple syntax highlighting */
+        pre[class*="language-"] {
+            background: #1e293b;
+            /* slate-800 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+        }
+
+        .token.comment,
+        .token.prolog,
+        .token.doctype,
+        .token.cdata {
+            color: #9ca3af;
+        }
+
+        /* gray-400 */
+        .token.punctuation {
+            color: #f9fafb;
+        }
+
+        /* gray-50 */
+        .token.property,
+        .token.tag,
+        .token.boolean,
+        .token.number,
+        .token.constant,
+        .token.symbol,
+        .token.deleted {
+            color: #f0abfc;
+        }
+
+        /* fuchsia-300 */
+        .token.selector,
+        .token.attr-name,
+        .token.string,
+        .token.char,
+        .token.builtin,
+        .token.inserted {
+            color: #a5b4fc;
+        }
+
+        /* indigo-300 */
+        .token.operator,
+        .token.entity,
+        .token.url,
+        .language-css .token.string,
+        .style .token.string {
+            color: #93c5fd;
+        }
+
+        /* blue-300 */
+        .token.atrule,
+        .token.attr-value,
+        .token.keyword {
+            color: #c084fc;
+        }
+
+        /* purple-400 */
+        .token.function,
+        .token.class-name {
+            color: #818cf8;
+        }
+
+        /* indigo-400 */
+        .token.regex,
+        .token.important,
+        .token.variable {
+            color: #fdba74;
+        }
+
+        /* orange-300 */
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-200">
+
+    <!-- Header -->
+    <header class="bg-gray-900/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="index.html" class="text-2xl font-bold text-white">Bhawesh.dev</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="index.html#about"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About</a>
+                        <a href="experience.html"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Experience</a>
+                        <a href="index.html#skills"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Skills</a>
+                        <a href="projects.html"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Projects</a>
+                        <a href="achievements.html"
+                            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Achievements</a>
+                        <a href="blog.html"
+                            class="bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium">Blog</a>
+                        <a href="contact.html"
+                            class="bg-indigo-600 text-white hover:bg-indigo-500 px-4 py-2 rounded-md text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button id="mobile-menu-button" type="button"
+                        class="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                        aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden" id="mobile-menu" style="display: none;">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html#about"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">About</a>
+                <a href="experience.html"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Experience</a>
+                <a href="index.html#skills"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Skills</a>
+                <a href="projects.html"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Projects</a>
+                <a href="achievements.html"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Achievements</a>
+                <a href="blog.html"
+                    class="bg-gray-700 text-white block px-3 py-2 rounded-md text-base font-medium">Blog</a>
+                <a href="contact.html"
+                    class="bg-indigo-600 text-white hover:bg-indigo-500 block px-4 py-2 rounded-md text-base font-medium">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-24">
+        <section id="blog" class="py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-white">My Blog</h2>
+                    <p class="text-gray-400 mt-2">Thoughts, tutorials, and tech deep dives.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Blog Post Card 1 -->
+                    <div class="blog-post-card bg-gray-800 rounded-lg overflow-hidden flex flex-col">
+                        <img src="https://placehold.co/600x400/ec4899/ffffff?text=React+Hooks" alt="React Hooks"
+                            class="w-full h-56 object-cover">
+                        <div class="p-6 flex flex-col flex-grow">
+                            <p class="text-sm text-gray-500 mb-2">July 26, 2025</p>
+                            <h3 class="text-xl font-bold text-white mb-2">Getting Started with React Hooks</h3>
+                            <p class="text-gray-400 mb-4 flex-grow">A beginner-friendly guide to understanding and using
+                                React Hooks for state management.</p>
+                            <button data-modal-target="modal-react"
+                                class="read-more-btn mt-auto text-indigo-400 hover:text-indigo-300 font-semibold text-left">Read
+                                More &rarr;</button>
+                        </div>
+                    </div>
+                    <!-- Blog Post Card 2 -->
+                    <div class="blog-post-card bg-gray-800 rounded-lg overflow-hidden flex flex-col">
+                        <img src="https://placehold.co/600x400/8b5cf6/ffffff?text=Node.js+API" alt="Node.js API"
+                            class="w-full h-56 object-cover">
+                        <div class="p-6 flex flex-col flex-grow">
+                            <p class="text-sm text-gray-500 mb-2">July 20, 2025</p>
+                            <h3 class="text-xl font-bold text-white mb-2">Building a REST API with Node.js and Express
+                            </h3>
+                            <p class="text-gray-400 mb-4 flex-grow">Learn how to create a robust and scalable REST API
+                                from scratch using Node.js and Express.</p>
+                            <button data-modal-target="modal-node"
+                                class="read-more-btn mt-auto text-indigo-400 hover:text-indigo-300 font-semibold text-left">Read
+                                More &rarr;</button>
+                        </div>
+                    </div>
+                    <!-- Blog Post Card 3 -->
+                    <div class="blog-post-card bg-gray-800 rounded-lg overflow-hidden flex flex-col">
+                        <img src="https://placehold.co/600x400/f59e0b/ffffff?text=Solidity+Basics" alt="Solidity Basics"
+                            class="w-full h-56 object-cover">
+                        <div class="p-6 flex flex-col flex-grow">
+                            <p class="text-sm text-gray-500 mb-2">July 15, 2025</p>
+                            <h3 class="text-xl font-bold text-white mb-2">The Basics of Smart Contracts with Solidity
+                            </h3>
+                            <p class="text-gray-400 mb-4 flex-grow">An introduction to the fundamental concepts of
+                                blockchain and writing your first smart contract.</p>
+                            <button data-modal-target="modal-solidity"
+                                class="read-more-btn mt-auto text-indigo-400 hover:text-indigo-300 font-semibold text-left">Read
+                                More &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <!-- React Hooks Modal -->
+    <div id="modal-react" class="modal">
+        <div class="modal-content bg-gray-900 text-gray-200 m-auto p-6 sm:p-8 rounded-lg relative">
+            <button class="close-btn absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</button>
+            <h2 class="text-3xl font-bold text-white mb-4">Getting Started with React Hooks</h2>
+            <p class="text-gray-400 mb-6">React Hooks revolutionized how we write components. They let you use state and
+                other React features without writing a class. Let's dive into the two most essential hooks: `useState`
+                and `useEffect`.</p>
+
+            <h3 class="text-2xl font-semibold text-indigo-400 mt-8 mb-4">The `useState` Hook</h3>
+            <p class="mb-4">The `useState` hook is your tool for adding state to functional components. In the past, you
+                needed a class component to manage state. Now, it's as simple as calling a function.</p>
+            <pre class="language-js"><code><span class="token keyword">import</span> React<span class="token punctuation">,</span> <span class="token punctuation">{</span> useState <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">Counter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Declare a new state variable, which we'll call "count"</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>count<span class="token punctuation">,</span> setCount<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">useState</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>You clicked {count} times<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">onClick</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">setCount</span><span class="token punctuation">(</span>count <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">}</span></span><span class="token punctuation">></span></span>
+        Click me
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+
+            <h3 class="text-2xl font-semibold text-indigo-400 mt-8 mb-4">Video Demo: React Hooks Explained</h3>
+            <p class="mb-4">This short video provides a great visual explanation of how `useState` and other hooks work.
+            </p>
+            <div class="video-container rounded-lg overflow-hidden">
+                <iframe src="https://www.youtube.com/embed/TNhaISOUy6Q" title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+
+            <div class="mt-8 pt-4 border-t border-gray-700 flex items-center justify-between">
+                <p class="text-sm text-gray-500">Share this post:</p>
+                <div class="flex gap-4">
+                    <a href="#" target="_blank" class="share-linkedin text-gray-400 hover:text-white"><i
+                            class="fab fa-linkedin text-2xl"></i></a>
+                    <a href="#" class="share-mail text-gray-400 hover:text-white"><i
+                            class="fas fa-envelope text-2xl"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Node.js API Modal -->
+    <div id="modal-node" class="modal">
+        <div class="modal-content bg-gray-900 text-gray-200 m-auto p-6 sm:p-8 rounded-lg relative">
+            <button class="close-btn absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</button>
+            <h2 class="text-3xl font-bold text-white mb-4">Building a REST API with Node.js and Express</h2>
+            <p class="text-gray-400 mb-6">Node.js and Express are a powerful combination for building fast and scalable
+                APIs. A REST API is an architectural style that defines a set of constraints for creating web services.
+                Let's build a simple "Hello World" server.</p>
+
+            <h3 class="text-2xl font-semibold text-indigo-400 mt-8 mb-4">Setting Up The Server</h3>
+            <p class="mb-4">First, make sure you have Node.js installed. Then, initialize a new project and install
+                Express.</p>
+            <pre class="language-bash"><code>npm init -y
+npm install express</code></pre>
+
+            <p class="mt-6 mb-4">Now, create a file named `server.js` and add the following code. This sets up a basic
+                server that listens on port 3000 and responds to requests to the root URL.</p>
+            <pre
+                class="language-js"><code><span class="token keyword">const</span> express <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'express'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token function">express</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> port <span class="token operator">=</span> <span class="token number">3000</span><span class="token punctuation">;</span>
+
+app<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  res<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token string">'Hello World!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span>port<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Example app listening at http://localhost:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>port<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+            <div class="mt-8 pt-4 border-t border-gray-700 flex items-center justify-between">
+                <p class="text-sm text-gray-500">Share this post:</p>
+                <div class="flex gap-4">
+                    <a href="#" target="_blank" class="share-linkedin text-gray-400 hover:text-white"><i
+                            class="fab fa-linkedin text-2xl"></i></a>
+                    <a href="#" class="share-mail text-gray-400 hover:text-white"><i
+                            class="fas fa-envelope text-2xl"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Solidity Modal -->
+    <div id="modal-solidity" class="modal">
+        <div class="modal-content bg-gray-900 text-gray-200 m-auto p-6 sm:p-8 rounded-lg relative">
+            <button class="close-btn absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</button>
+            <h2 class="text-3xl font-bold text-white mb-4">The Basics of Smart Contracts with Solidity</h2>
+            <p class="text-gray-400 mb-6">Solidity is the most popular language for writing smart contracts on Ethereum
+                and other compatible blockchains. A smart contract is like a regular contract, but instead of being
+                written on paper, it's written in code and runs on the blockchain.</p>
+
+            <h3 class="text-2xl font-semibold text-indigo-400 mt-8 mb-4">Your First Smart Contract</h3>
+            <p class="mb-4">Here is a simple "HelloWorld" smart contract. It stores a piece of text and has a function
+                to update it. Note the `pragma` line, which specifies the compiler version, and the use of state
+                variables and functions.</p>
+            <pre class="language-solidity"><code><span class="token comment">// SPDX-License-Identifier: MIT</span>
+<span class="token pragma"><span class="token keyword">pragma</span> <span class="token keyword">solidity</span> <span class="token operator">^</span><span class="token version">0.8.0</span><span class="token punctuation">;</span></span>
+
+<span class="token keyword">contract</span> <span class="token class-name">HelloWorld</span> <span class="token punctuation">{</span>
+    <span class="token keyword">string</span> <span class="token keyword">public</span> greet <span class="token operator">=</span> <span class="token string">"Hello World!"</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">function</span> <span class="token function-name">setGreeting</span><span class="token punctuation">(</span><span class="token keyword">string</span> <span class="token keyword">memory</span> _newGreet<span class="token punctuation">)</span> <span class="token keyword">public</span> <span class="token punctuation">{</span>
+        greet <span class="token operator">=</span> _newGreet<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+
+            <div class="mt-8 pt-4 border-t border-gray-700 flex items-center justify-between">
+                <p class="text-sm text-gray-500">Share this post:</p>
+                <div class="flex gap-4">
+                    <a href="#" target="_blank" class="share-linkedin text-gray-400 hover:text-white"><i
+                            class="fab fa-linkedin text-2xl"></i></a>
+                    <a href="#" class="share-mail text-gray-400 hover:text-white"><i
+                            class="fas fa-envelope text-2xl"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-gray-400">
+            <p>&copy; 2025 Bhawesh Pandey. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+            mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.style.display = isExpanded ? 'none' : 'block';
+        });
+
+        // Modal script
+        const readMoreBtns = document.querySelectorAll('.read-more-btn');
+        const closeBtns = document.querySelectorAll('.close-btn');
+        const modals = document.querySelectorAll('.modal');
+
+        const openModal = (modal) => {
+            if (modal) {
+                // --- Dynamic Share Links ---
+                const postTitle = modal.querySelector('h2').innerText;
+                const postURL = window.location.href.split('#')[0] + '#' + modal.id;
+
+                const linkedInLink = modal.querySelector('.share-linkedin');
+                const mailLink = modal.querySelector('.share-mail');
+
+                if (linkedInLink) {
+                    const linkedInURL = `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(postURL)}&title=${encodeURIComponent(postTitle)}`;
+                    linkedInLink.href = linkedInURL;
+                }
+
+                if (mailLink) {
+                    const mailSubject = `Check out this article: ${postTitle}`;
+                    const mailBody = `I thought you might find this interesting:\n\n${postTitle}\n${postURL}`;
+                    const mailtoURL = `mailto:?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+                    mailLink.href = mailtoURL;
+                }
+
+                modal.style.display = 'flex';
+                document.body.classList.add('modal-open');
+            }
+        }
+
+        const closeModal = (modal) => {
+            if (modal) {
+                modal.style.display = 'none';
+                // Pause video when modal closes
+                const iframe = modal.querySelector('iframe');
+                if (iframe) {
+                    const iframeSrc = iframe.src;
+                    iframe.src = iframeSrc;
+                }
+            }
+        }
+
+        // Check if any modal is open before removing the class
+        const checkModalsAndToggleBodyClass = () => {
+            const anyModalOpen = Array.from(modals).some(m => m.style.display === 'flex');
+            if (!anyModalOpen) {
+                document.body.classList.remove('modal-open');
+            }
+        }
+
+        readMoreBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const modalId = btn.getAttribute('data-modal-target');
+                const modal = document.getElementById(modalId);
+                openModal(modal);
+            });
+        });
+
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const modal = btn.closest('.modal');
+                closeModal(modal);
+                checkModalsAndToggleBodyClass();
+            });
+        });
+
+        modals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal(modal);
+                    checkModalsAndToggleBodyClass();
+                }
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") {
+                modals.forEach(modal => {
+                    if (modal.style.display === 'flex') {
+                        closeModal(modal);
+                    }
+                });
+                checkModalsAndToggleBodyClass();
+            }
+        });
+    </script>
+
+</body>
+
+</html>
