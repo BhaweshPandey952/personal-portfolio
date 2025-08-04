@@ -4,7 +4,7 @@
 
 ## 🚀 Live Demo
 
-[A live demo of this project will be hosted here.]
+[Personal Portfolio demo](https://portfolio-bhaweshpandey.netlify.app/)
 
 ## ✨ Key Features
 
